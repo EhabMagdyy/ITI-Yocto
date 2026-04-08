@@ -22,10 +22,22 @@ meta-weather/
 ```
 
 ---
+
+## 3. Append for testing
+
+``` bitbake
+# in conf/layer.conf (not good, just for testing):
+IMAGE_INSTALL:append = " sayhi"
+```
+
+---
  
-## 3. Build
+## 4. Build
  
 ```bash
 bitbake sayhi
+bitbake core-image-minimal -k
+# from shared-build/tmp/deploy/images/raspberrypi3-64
+sudo bmaptool copy core-image-minimal-raspberrypi3-64.rootfs-20260408223323.wic.bz2 /dev/sdb
 ```
  
