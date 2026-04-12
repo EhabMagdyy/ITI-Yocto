@@ -1,4 +1,4 @@
-# Building Recipe that compiles & installs an app in /usr/bin
+# Building Recipe
 
 ## 0. Source
 ``` bash
