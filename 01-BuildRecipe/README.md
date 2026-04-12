@@ -1,6 +1,6 @@
 # Building Recipe that compiles & installs an app in /usr/bin
 
-## 0. source
+## 0. Source
 ``` bash
 cd poky
 source oe-init-build-env ../build-rpi/
@@ -46,6 +46,18 @@ md5sum COPYING.MIT
 ``` bash
 bitbake sayhi -c clean
 bitbake sayhi -c fetch
+# if you make: bitbake sayhi -c compile without patch, you will get this error:
+```
+```
+DEBUG: Executing shell function do_compile
+main.c:3:1: warning: return type defaults to 'int' [-Wimplicit-int]
+    3 | intmain() {
+      | ^~~~~~~
+/home/ehab/Documents/ITI_9Months/Yocto/shared-build/tmp/work/cortexa53-poky-linux/sayhi/1.0/recipe-sysroot-native/usr/bin/aarch64-poky-linux/../../libexec/aarch64-poky-linux/gcc/aarch64-poky-linux/13.4.0/ld: /home/ehab/Documents/ITI_9Months/Yocto/shared-build/tmp/work/cortexa53-poky-linux/sayhi/1.0/recipe-sysroot/usr/lib/Scrt1.o: in function `_start':
+/usr/src/debug/glibc/2.39+git/csu/../sysdeps/aarch64/start.S:81:(.text+0x1c): undefined reference to `main'
+/home/ehab/Documents/ITI_9Months/Yocto/shared-build/tmp/work/cortexa53-poky-linux/sayhi/1.0/recipe-sysroot-native/usr/bin/aarch64-poky-linux/../../libexec/aarch64-poky-linux/gcc/aarch64-poky-linux/13.4.0/ld: /usr/src/debug/glibc/2.39+git/csu/../sysdeps/aarch64/start.S:82:(.text+0x20): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+WARNING: exit code 1 from a shell command.
 ```
 
 ---
