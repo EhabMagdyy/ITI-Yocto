@@ -1,0 +1,30 @@
+From df6fa75705237fda76befedc17a3e21b3eb12b92 Mon Sep 17 00:00:00 2001
+From: EhabMagdyy <ehabmagdy0044@gmail.com>
+Date: Sun, 12 Apr 2026 20:08:18 +0200
+Subject: [PATCH] fix & added Ehab
+
+---
+ main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/main.c b/main.c
+index c2ab72d..14ee463 100644
+--- a/main.c
++++ b/main.c
+@@ -1,8 +1,8 @@
+-#include<stdio.h>
++#include <stdio.h>
+ 
+-intmain() {
++int main(){
+     printf("===========================================\n");
+-    printf("        Hello Ayman\n");
++    printf("         Hello Ehab From YOCTO!\n            ");
+     printf("===========================================\n");
+     return 0;
+-}   
+\ No newline at end of file
++}   
+-- 
+2.34.1
+

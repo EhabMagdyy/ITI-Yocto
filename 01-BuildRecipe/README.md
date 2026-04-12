@@ -1,5 +1,10 @@
 # Building Recipe that compiles & installs an app in /usr/bin
-<img width="933" height="415" alt="Screenshot from 2026-04-09 00-38-46" src="https://github.com/user-attachments/assets/44e5606b-5560-4549-ac70-f12b53c3d379" />
+
+## 0. source
+``` bash
+cd poky
+source oe-init-build-env ../build-rpi/
+```
 
 ## 1. Create Layer
  
@@ -7,37 +12,104 @@
 bitbake-layers create-layer meta-weather
 bitbake-layers add-layer meta-weather
 ```
- 
+
 ---
- 
-## 2. Create Recipe Structure
- 
+
+## 2. Layer Structure
+
 ```
 meta-weather/
-└── recipes-apps/
-    └── sayhi/
-        ├── sayhi.bb
-        └── files/
-            └── sayhi.c     <= your C source goes here
+├── conf
+│   └── layer.conf
+├── COPYING.MIT
+├── README
+└── recipes-apps
+    └── sayhi
+        ├── files
+        │   └── 0001-fix-added-Ehab.patch   <== patch file (generated later)
+        └── sayhi.bb                        <== your recipe
 ```
 
 ---
 
-## 3. Append for testing
+## 3. Licence checksum
 
-``` bitbake
-# in conf/layer.conf (not good, just for testing):
-IMAGE_INSTALL:append = " sayhi"
+``` bash
+md5sum COPYING.MIT
+# put it in recipe: 3da9cfbcb788c80a0384361b4de20420
+```
+
+---
+
+## 4. Fetch
+
+``` bash
+bitbake sayhi -c clean
+bitbake sayhi -c fetch
+```
+
+---
+
+## 5. Find your WORKDIR source (the repo we put in `SRC_URI`)
+``` bash
+ls ~/Documents/ITI_9Months/Yocto/shared-build/tmp/work/cortexa53-poky-linux/sayhi/1.0/git/
+```
+
+## 5. Create patch
+``` bash
+cd ~/Documents/ITI_9Months/Yocto/shared-build/tmp/work/cortexa53-poky-linux/sayhi/1.0/git/
+
+# Initialize git so we can use format-patch
+git init
+git add main.c
+git commit -m "original file"
+git status
+git add main.c
+git commit -m "fix & added Ehab"
+git add main.c
+git format-patch -1 HEAD
+cp 0001-fix-added-Ehab.patch ~/Documents/ITI_9Months/Yocto/meta-weather/recipes-apps/sayhi/files/
+```
+
+---
+
+## 6. Apply patch & compile
+
+``` bash
+bitbake sayhi -c patch
+bitbake sayhi -c compile
 ```
 
 ---
  
-## 4. Build
+## 7. Generate the package
  
 ```bash
+# Run install + package
 bitbake sayhi
-bitbake core-image-minimal -k
-# from shared-build/tmp/deploy/images/raspberrypi3-64
-sudo bmaptool copy core-image-minimal-raspberrypi3-64.rootfs-20260408223323.wic.bz2 /dev/sdb
+# Verify the binary is in the package
+oe-pkgdata-util list-pkg-files sayhi
+# expected:
 ```
- 
+```
+sayhi:
+	/usr/bin/ehab
+```
+
+---
+
+## 8. To Get It Into the Image
+### A) Tell the image to include it (local.conf)
+``` bash
+nano ~/Documents/ITI_9Months/Yocto/build-rpi/conf/local.conf
+```
+
+### Add this line at the bottom:
+```
+# append the package
+IMAGE_INSTALL:append = " sayhi"
+```
+### B) Build the full image
+``` bash
+bashbitbake core-image-minimal -k
+```
