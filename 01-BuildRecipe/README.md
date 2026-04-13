@@ -1,4 +1,7 @@
 # Building Recipe
+<img width="915" height="508" alt="01-yocto_buildrecipe" src="https://github.com/user-attachments/assets/38087d3b-407a-44a8-b24c-cf96f609c0db" />
+
+---
 
 ## 0. Source
 ``` bash
