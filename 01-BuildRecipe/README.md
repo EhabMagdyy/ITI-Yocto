@@ -49,6 +49,7 @@ md5sum COPYING.MIT
 ``` bash
 bitbake sayhi -c clean
 bitbake sayhi -c fetch
+bitbake sayhi -c unpack
 # if you make: bitbake sayhi -c compile without patch, you will get this error:
 ```
 ```
