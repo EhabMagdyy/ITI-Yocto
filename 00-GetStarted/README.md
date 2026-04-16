@@ -47,16 +47,31 @@ TMPDIR = "/home/ehab/Documents/ITI_9Months/Yocto/shared-build/tmp"
 # Select number of threads for build
 BB_NUMBER_THREADS = "12"
 # Enable console on serial port - to show login shell after booting
+# We are telling Yocto: "Please run a login shell on /dev/ttyAMA0 at a baud rate of 115200."
 SERIAL_CONSOLES = "115200;ttyAMA0"
+RPI_EXTRA_CONFIG = "dtoverlay=miniuart-bt"
+CMDLINE_ROOT_PARTITION = "/dev/sda2"
+
 # Build
 bitbake core-image-minimal -k
 ```
 
-### 5. Decompress and Flash
-``` bash
-cd shared-build/tmp/deploy/images/raspberrypi3-64/
-bzip2 -df core-image-minimal-raspberrypi3-64.rootfs.wic.bz2
+---
 
+### 5. Check your bootfile & rootfs
+
+```bash
+# the generated image's boot partition
+ls ~/Documents/ITI_9Months/Yocto/shared-build/tmp/deploy/images/raspberrypi3-64/bootfiles/
+
+# the generated image's root partition
+ls ~/Documents/ITI_9Months/Yocto/shared-build/tmp/work/raspberrypi3_64-poky-linux/core-image-minimal/1.0/rootfs/
+```
+
+---
+
+### 6. Clear your USB Disk & Flash
+``` bash
 # Unmount everything on the disk first
 sudo umount /dev/sdb1 2>/dev/null
 sudo umount /dev/sdb2 2>/dev/null
@@ -70,26 +85,30 @@ sudo dd if=/dev/zero of=/dev/sdb bs=1M count=100 conv=fsync
 # Confirm disk is clean
 sudo fdisk -l /dev/sdb
 
-# Flash image
-sudo dd if=core-image-minimal-raspberrypi3-64.rootfs.wic of=/dev/sdb bs=4M status=progress conv=fsync
+# Flash image using bmap tool
+# Faster - Decompresses on the fly - Verifies checksums - Skips empty blocks
+cd ~/Documents/ITI_9Months/Yocto/shared-build/tmp/deploy/images/raspberrypi3-64
+sudo apt install bmap-tools
+sudo bmaptool copy core-image-minimal-raspberrypi3-64.rootfs-xxxxxxxxxx.wic.bz2 /dev/sdb
+# Just make sure the .bmap file is in the same directory, bmaptool picks it up automatically.
+
+# eject & remove your usb disk
+sudo eject /dev/sdb
 ``` 
 
-### using bmap tool to load compressed image
+### 7. Work with USB-TTL
 ``` bash
-# Faster - Decompresses on the fly - Verifies checksums - Skips empty blocks
-sudo apt install bmap-tools
-sudo bmaptool copy core-image-minimal-raspberrypi3-64.rootfs-20260404214557.wic.bz2 /dev/sdb
-
-# Just make sure the .bmap file is in the same directory, bmaptool picks it up automatically.
-```
-
-### 6. Work with USB-TTL
-``` bash
-# in config.txt
+# in config.txt put
 dtoverlay=miniuart-bt
+# instead of:
+# enable_uart=1
+# it doesn't work with me
 
-# cmdline.txt
-dwc_otg.lpm_enable=0 root=/dev/sda2 rootwait console=tty1 console=ttyAMA0,115200 rootfstype=ext4 net.ifnames=0
+# This Device Tree Overlay (dtoverlay=miniuart-bt) swaps the UARTs.
+
+# It moves the Mini UART to the Bluetooth port (Bluetooth is low-speed and doesn't care about the clock fluctuations).
+# It moves the PL011 UART (the good one) to the GPIO pins 14 and 15.
+# Since the PL011 has its own dedicated clock, the data remains stable regardless of CPU speed changes.
 ```
 ---
 
