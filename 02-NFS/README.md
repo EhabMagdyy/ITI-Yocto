@@ -1,4 +1,9 @@
 # Yocto image with NFS rootfs
-<img width="1920" height="1080" alt="yocto-02-nfs" src="https://github.com/user-attachments/assets/83bee6a3-08b7-4d39-aff6-8f42848823db" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8725a31e-0855-4cd9-9909-2c692236af18" />
 
 ### That's a collection of what we did in `Embedded-Linux/EL_Task6` Repo & `00-GetStarted`
+
+### Extracting the rootfs to nfs
+'''bash
+sudo tar -xjf shared-build/tmp/deploy/images/raspberrypi3-64/core-image-minimal-raspberrypi3-64.rootfs.tar.bz2 -C /srv/nfs/rootfs
+'''
