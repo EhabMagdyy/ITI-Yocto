@@ -1,0 +1,1 @@
+# Creating an app that depends on a library & install it in image
