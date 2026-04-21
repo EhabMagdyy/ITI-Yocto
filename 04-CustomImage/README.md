@@ -88,13 +88,7 @@ Add the following to `build-rpi/conf/local.conf`:
 ```sh
 # systemd as init manager
 DISTRO_FEATURES:append = " systemd usrmerge"
-DISTRO_FEATURES:remove = "sysvinit"
 VIRTUAL-RUNTIME_init_manager = "systemd"
-VIRTUAL-RUNTIME_initscripts = ""
-VIRTUAL-RUNTIME_login_manager = "shadow-base"
-VIRTUAL-RUNTIME_dev_manager = "udev"
-
-# Accept restricted firmware license for RPi WiFi/BT firmware
 LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
 
 # Build performance
