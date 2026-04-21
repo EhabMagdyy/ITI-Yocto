@@ -56,6 +56,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384
 inherit core-image
 
 IMAGE_FEATURES:append = " ssh-server-dropbear debug-tweaks"
+IMAGE_INSTALL:append = " python3 tcpdump"
 
 # Minimum 12MB
 IMAGE_ROOTFS_SIZE ?= "12288"
