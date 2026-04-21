@@ -61,6 +61,19 @@ IMAGE_OVERHEAD_FACTOR = "1.5"
 IMAGE_FSTYPES = "ext3 tar.bz2 wic.bz2"
 ```
 
+```
+normal recipe  →  produces an RPM package
+image recipe   →  inherits core-image → produces a rootfs + image files
+```
+#### core-image.bbclass does several things that make a recipe behave as an image:
+
+- It defines do_rootfs — the task that assembles the root filesystem by installing packages via DNF/RPM
+- It defines do_image — the task that produces the final image files (.tar.bz2, .ext3, etc.)
+- It defines do_image_complete — post-processing
+- It sets IMAGE_INSTALL with packagegroup-core-boot as the base
+- It makes IMAGE_FEATURES, IMAGE_INSTALL, IMAGE_FSTYPES meaningful
+
+
 > **Note:** Do not set `DISTRO_FEATURES` or `VIRTUAL-RUNTIME_*` in the image recipe — these must go in `local.conf` only.
 
 ---
