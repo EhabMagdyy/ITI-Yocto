@@ -1,4 +1,7 @@
 # Custom Yocto Image for Raspberry Pi 3 (64-bit) with
+<img width="1287" height="991" alt="yocto-04-customimage" src="https://github.com/user-attachments/assets/bb08b608-925f-4f3f-a85b-ac7c22312183" />
+
+---
 
 ## Overview
 
