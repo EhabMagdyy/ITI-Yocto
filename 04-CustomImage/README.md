@@ -89,7 +89,10 @@ Add the following to `build-rpi/conf/local.conf`:
 ```sh
 # systemd as init manager
 DISTRO_FEATURES:append = " systemd usrmerge"
+# To make systemd as init process
 VIRTUAL-RUNTIME_init_manager = "systemd"
+# Backward compatibility with systemv
+DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " sysvinit"
 LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
 
 # Build performance
