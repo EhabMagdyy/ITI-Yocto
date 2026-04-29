@@ -1,0 +1,1 @@
+# Custom Yocto image with Systemd, GUI, Qt and VNC Support
